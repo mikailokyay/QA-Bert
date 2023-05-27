@@ -42,8 +42,8 @@ class QuestionAnswerer(QATrainer):
                                             truncation=True).to(self.device)
 
         outputs = self.model(**inputs)
-        answer_start = np.argmax(outputs[0])
-        answer_end = np.argmax(outputs[1]) + 1
+        answer_start = outputs[0].cpu().argmax()
+        answer_end = outputs[1].cpu().argmax() + 1
 
         answer = self.tokenizer.convert_tokens_to_string(
             self.tokenizer.convert_ids_to_tokens(inputs['input_ids'][0][answer_start:answer_end]))
@@ -59,6 +59,7 @@ if __name__ == "__main__":
         "batch_size": 16,
         "learning_rate": 1e-5,
         "epochs": 2,
+        "max_length": 512,
         "save_only_last_epoch": False,
         "output_dir": '../outputs',
 
