@@ -142,7 +142,7 @@ class QATrainer:
 
         optimizer = torch.optim.AdamW(model.parameters(), lr=params["learning_rate"])
 
-        for i in range(params["epoch"]):
+        for i in range(params["epochs"]):
             batch_losses = []
             model.train()  # training mode
 
@@ -194,14 +194,14 @@ class QATrainer:
                    f"bert-epoch-{i}-train-loss-{str(train_current_loss)}" \
                    f"-val-loss-{str(val_current_loss)} "
             if params["save_only_last_epoch"]:
-                if i == params["epoch"] - 1:
+                if i == params["epochs"] - 1:
                     tokenizer.save_pretrained(path)
                     model.save_pretrained(path)
             else:
                 tokenizer.save_pretrained(path)
                 model.save_pretrained(path)
 
-            print("-Epoch: {}/{}...".format(i + 1, params["epoch"]),
+            print("-Epoch: {}/{}...".format(i + 1, params["epochs"]),
                   "Train Loss: {:.6f}".format(train_current_loss),
                   "Val Loss: {:.6f}".format(val_current_loss)
                   )
