@@ -2,6 +2,7 @@
 This is Question Answering main file
 """
 import numpy as np
+from tqdm.auto import tqdm
 from src.train import QATrainer
 from src.evaluation import evaluate
 
@@ -20,10 +21,10 @@ class QuestionAnswerer(QATrainer):
         """
         predictions = []
         gold_answers = []
-        for _, row in self.test_df.iterrows():
-            text = row["context"]
-            question = row["question"]
-            answer_text = row["answer_text"]
+        for idx in tqdm(range(len(self.test_df))):
+            text = self.test_df.loc[idx, "context"]
+            question = self.test_df.loc[idx,"question"]
+            answer_text = self.test_df.loc[idx,"answer_text"]
             prediction = self.predict_answer(text, question)
             predictions.append(prediction)
             gold_answers.append(answer_text)
